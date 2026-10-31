@@ -228,7 +228,7 @@ function Portfolio() {
         <div className="portfolio-card video-card">
             <div className="video-wrapper">
                 <video autoPlay controls muted playsInline loop preload="auto" poster="/images/books-poems.jpg">
-                  <source src="/images/brain.mp4" type="video/mp4" />
+                  <source src="/images/brain-paining-you.mp4" type="video/mp4" />
                   Your browser does not support HTML video.
                 </video>
             </div>
