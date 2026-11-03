@@ -297,7 +297,7 @@ export default function App() {
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Oasis of Greatness Publishers LTD | Publishing, Solar & Water Solutions</title>
-        <link rel="icon" type="image/png" href="/images/favicon.png" />
+        <link rel="icon" href="/images/favicon.ico" />
         <meta name="description" content="Oasis of Greatness Publishers LTD offers professional printing and publishing, biography writing, books and poems, water treatment solutions, 
         and solar engineering services." />
         <meta name="keywords" content="Oasis of Greatness Publishers, printing, publishing, biography writing, books, poems, water treatment, alkaline water, solar engineering, solar installation" />
@@ -305,7 +305,7 @@ export default function App() {
         <meta  property="og:title" content="Oasis of Greatness Publishers LTD" />
         <meta  property="og:description" content="Discover our publishing, water treatment and solar engineering services." />
         <meta  property="og:type" content="website" />
-        <meta  property="og:image" content="https://osiriame.com/thumbnail.jpg" />
+        <meta  property="og:image" content="https://osiriame.com/thumbnail.png" />
         <meta  property="og:url" content="https://osiriame.com/" />
         <meta  name="twitter-card" content="summary_large_image" />
       </Helmet>
