@@ -1,58 +1,56 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 :root {
-  font-family: 'Inter', Arial, sans-serif;
-  color: #102b49;
+  font-family: 'DM Sans', sans-serif;
+  color: #111111;
   background: #ffffff;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --navy: #082b4c;
-  --blue: #0868a8;
-  --gold: #efa915;
-  --light: #f4f8fc;
-  --text: #52647a;
+  --black: #111111;
+  --black-light: #1f1e1e;
+  --gold: #c9a45c;
+  --white: #ffffff;
+  --gray: #777f89;
 }
 
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 90px;
 }
 
 body {
   min-width: 320px;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
+  overflow-x: hidden;
 }
 
 button,
-input,
-textarea {
+a {
   font: inherit;
 }
 
-img {
-  display: block;
-  width: 100%;
-  object-fit: cover;
+button {
+  cursor: pointer;
 }
 
-section {
-  scroll-margin-top: 80px;
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img,
+video {
+  max-width: 100%;
 }
 
 ::selection {
-  background: #efa915;
-  color: #082b4c;
+  background: var(--gold);
+  color: var(--black);
 }
