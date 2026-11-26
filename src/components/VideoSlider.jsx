@@ -1,99 +1,161 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import YouTube from "react-youtube";
 import { siteContent } from "../data/siteContent";
+import "./VideoSlider.css";
 
 function VideoSlider() {
-  const videos = siteContent.videos;
+  const videos = siteContent.videos || [];
 
-  const [currentVideo, setCurrentVideo] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [failedVideos, setFailedVideos] = useState([]);
+  const [autoplayBlocked, setAutoplayBlocked] = useState(false);
 
-  const allFailed = failedVideos.length === videos.length;
+  const currentVideo = videos[currentIndex];
 
-  const nextVideo = () => {
-    setCurrentVideo((previous) => (previous + 1) % videos.length);
+  // Move to the next available video
+  const playNextVideo = () => {
+    if (videos.length === 0) return;
+
+    setCurrentIndex((previousIndex) => {
+      let nextIndex = (previousIndex + 1) % videos.length;
+      let attempts = 0;
+
+      while (
+        failedVideos.includes(videos[nextIndex].id) &&
+        attempts < videos.length
+      ) {
+        nextIndex = (nextIndex + 1) % videos.length;
+        attempts++;
+      }
+
+      return nextIndex;
+    });
   };
 
-  const handleVideoError = () => {
-    setFailedVideos((previous) =>
-      previous.includes(currentVideo)
-        ? previous
-        : [...previous, currentVideo]
-    );
+  const handleReady = (event) => {
+    setAutoplayBlocked(false);
 
-    if (failedVideos.length + 1 < videos.length) {
-      nextVideo();
+    event.target.mute();
+    event.target.playVideo();
+  };
+
+  const handleEnd = () => {
+    playNextVideo();
+  };
+
+  const handleError = () => {
+    setFailedVideos((previous) => {
+      if (previous.includes(currentVideo.id)) {
+        return previous;
+      }
+
+      return [...previous, currentVideo.id];
+    });
+
+    playNextVideo();
+  };
+
+  const handleAutoplayBlocked = () => {
+    setAutoplayBlocked(true);
+  };
+
+  const selectVideo = (index) => {
+    if (!failedVideos.includes(videos[index].id)) {
+      setCurrentIndex(index);
     }
   };
 
+  useEffect(() => {
+    if (
+      videos.length > 0 &&
+      failedVideos.length === videos.length
+    ) {
+      setFailedVideos([]);
+      setCurrentIndex(0);
+    }
+  }, [failedVideos, videos]);
+
+  if (videos.length === 0) {
+    return null;
+  }
+
+  if (videos.every((video) => failedVideos.includes(video.id))) {
+    return (
+      <section className="video-slider">
+        <div className="video-error">
+          <p>Unable to load the videos. Please try again later.</p>
+          <button onClick={() => setFailedVideos([])}>
+            Try Again
+          </button>
+        </div>
+      </section>
+    );
+  }
+
+  const playerOptions = {
+    width: "100%",
+    height: "100%",
+    playerVars: {
+      autoplay: 1,
+      controls: 1,
+      mute: 1,
+      playsinline: 1,
+      rel: 0,
+      modestbranding: 1,
+      enablejsapi: 1,
+    },
+  };
+
   return (
-    <section className="video-section">
+    <section className="video-slider">
 
-      <div className="section-heading">
-        <span className="section-subtitle">
-          WORDS THAT INSPIRE
-        </span>
+      <div className="video-slider-container">
 
-        <h2>Poetry & Expressions</h2>
+        <div className="video-player-wrapper">
 
-        <p>
-          Discover thoughts, reflections and expressions through poetry.
-        </p>
-      </div>
+          <YouTube
+            key={currentVideo.id}
+            videoId={currentVideo.id}
+            opts={playerOptions}
+            onReady={handleReady}
+            onEnd={handleEnd}
+            onError={handleError}
+            onAutoplayBlocked={handleAutoplayBlocked}
+            className="youtube-player"
+            iframeClassName="youtube-iframe"
+          />
 
-      <div className="video-container">
-
-        {!allFailed ? (
-          <>
-            <video
-              key={videos[currentVideo].src}
-              className="featured-video"
-              src={videos[currentVideo].src}
-              autoPlay
-              muted
-              playsInline
-              controls
-              preload="auto"
-              onEnded={nextVideo}
-              onError={handleVideoError}
-              aria-label={videos[currentVideo].title}
-            />
-
-            <div className="video-title">
-              <span>{videos[currentVideo].title}</span>
-              <span>
-                {currentVideo + 1} / {videos.length}
-              </span>
+          {autoplayBlocked && (
+            <div className="video-autoplay-notice">
+              <button
+                onClick={() => {
+                  setAutoplayBlocked(false);
+                }}
+              >
+                Play Video
+              </button>
             </div>
-          </>
-        ) : (
-          <div className="video-error">
-            <h3>Videos currently unavailable</h3>
-            <p>
-              Please check your internet connection or refresh this page.
-            </p>
-          </div>
-        )}
+          )}
 
-        <div className="video-indicators">
+        </div>
+
+        <div className="video-navigation">
+
           {videos.map((video, index) => (
             <button
-              key={video.src}
-              className={
-                currentVideo === index
-                  ? "indicator active"
-                  : "indicator"
+              key={video.id}
+              className={`video-dot ${
+                currentIndex === index ? "active" : ""
+              }`}
+              onClick={() => selectVideo(index)}
+              disabled={failedVideos.includes(video.id)}
+              aria-label={`Play ${video.title || `video ${index + 1}`}`}
+              aria-current={
+                currentIndex === index ? "true" : undefined
               }
-              onClick={() => {
-                if (!failedVideos.includes(index)) {
-                  setCurrentVideo(index);
-                }
-              }}
-              disabled={failedVideos.includes(index)}
-              aria-label={`Play ${video.title}`}
-              aria-current={currentVideo === index}
             />
           ))}
+
         </div>
 
       </div>
