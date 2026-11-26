@@ -1,4 +1,3 @@
-
 export const siteContent = {
   name: "Osiriame Obalabi O. Edeipo",
 
@@ -33,16 +32,16 @@ export const siteContent = {
 
   videos: [
     {
-      src: "/videos/poem1.mp4",
+      id: "A4LieuWd_G0",
       title: "9ja Youths! Is Your Brain Paining You?",
     },
     {
-      src: "/videos/poem2.mp4",
-      title: "If it is Juju or Mumu, It Must Stop!",
+      id: "Dec27PThKRI",
+      title: "Lock-Up Amidst Lock-Down",
     },
     {
-      src: "/videos/poem3.mp4",
-      title: "Indian Mic Mic",
+      id: "F5GCE9keYLQ",
+      title: "Entering Kofa Na'Isa",
     },
   ],
 
